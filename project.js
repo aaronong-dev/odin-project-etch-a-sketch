@@ -4,8 +4,21 @@ for (let i = 0; i < 16 * 16; i++){
     const square = document.createElement('div');
     square.classList.add('square');
     
+    // Initialize interaction tracking
+    square.interactionCount = 0;
+    
     square.addEventListener('mouseover', () => {
-        square.style.backgroundColor = 'orange';
+        // Generate random RGB color
+        const randomR = Math.floor(Math.random() * 256);
+        const randomG = Math.floor(Math.random() * 256);
+        const randomB = Math.floor(Math.random() * 256);
+        
+        // Apply progressive darkening (10% darker each time, max 10 interactions)
+        square.interactionCount = Math.min(square.interactionCount + 1, 10);
+        const opacity = 1 - (square.interactionCount - 1) * 0.1; // Start at 100%, decrease by 10% each time
+        
+        square.style.backgroundColor = `rgb(${randomR}, ${randomG}, ${randomB})`;
+        square.style.opacity = opacity;
     });
 
     container.appendChild(square);
@@ -79,18 +92,35 @@ function createGrid(size) {
     container.innerHTML = '';
 
     container.style.display = 'grid';
-    container.style.gridTemplateColumns = 'repeat(${size}, 1fr)';
-    container.style.gridTemplateRows = 'repeat(${size}, 1fr)';
-    container.style.width = '960px';
-    container.style.height = '960px';
-    container.style.border = '1px solid #ccc';
+    // Calculate square size to maintain consistent size regardless of grid size
+    const squareSize = 20; // pixels per square
+    const containerSize = size * squareSize;
+    
+    container.style.gridTemplateColumns = `repeat(${size}, ${squareSize}px)`;
+    container.style.gridTemplateRows = `repeat(${size}, ${squareSize}px)`;
+    container.style.width = `${containerSize}px`;
+    container.style.height = `${containerSize}px`;
 
     for (let i = 0; i < size * size; i++) {
         const square = document.createElement('div');
         square.classList.add('grid-square');
         square.style.border = '1px solid #eee';
+        
+        // Initialize interaction tracking
+        square.interactionCount = 0;
+        
         square.addEventListener('mouseover', () => {
-            square.style.backgroundColor = 'orange';
+            // Generate random RGB color
+            const randomR = Math.floor(Math.random() * 256);
+            const randomG = Math.floor(Math.random() * 256);
+            const randomB = Math.floor(Math.random() * 256);
+            
+            // Apply progressive darkening (10% darker each time, max 10 interactions)
+            square.interactionCount = Math.min(square.interactionCount + 1, 10);
+            const opacity = 1 - (square.interactionCount - 1) * 0.1; // Start at 100%, decrease by 10% each time
+            
+            square.style.backgroundColor = `rgb(${randomR}, ${randomG}, ${randomB})`;
+            square.style.opacity = opacity;
         });
         container.appendChild(square);
     }
